@@ -14,6 +14,7 @@ introScreen = True
 
 def main_menu():
     while True:
+        pygame.draw.rect(screen, (255, 255, 255), (40, 40, 60, 60))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
