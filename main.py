@@ -78,13 +78,14 @@ start_button = button((150, 43, 56), (width / 2) - 175, 450, 350, 100, "Start Ga
 end_button = button((150, 43, 56), (width / 2) - 175, 600, 350, 100, "Quit")
 
 font = pygame.font.Font("freesansbold.ttf", 30)
+x = 150
+y = 641
 
 
-def main_game(need_sen, keys_pressed, keys_right):
+def main_game(need_sen, keys_pressed, keys_right, x):
     screen.fill((0, 0, 0))
 
     while True:
-        pygame.display.update()
         if need_sen == True:
             sentence = create_sentence()
             for char in sentence:
@@ -96,14 +97,23 @@ def main_game(need_sen, keys_pressed, keys_right):
         textRect0.center = (width // 2, height - 125)
         screen.fill((135, 206, 235))
         screen.blit(text0, textRect0)
+        if keys_pressed == 0:
+            underline = pygame.Rect(
+                textRect0.bottomleft[0], textRect0.bottomleft[1] - 2, 10, 5
+            )
+        else:
+            underline = pygame.Rect(underline.x, underline.y, 10, 5)
 
         pygame.draw.line(screen, black, (0, 562.5), (1000, 562.5), 3)
+        pygame.draw.rect(screen, (128, 128, 128), underline)
         for event in pygame.event.get():
             if event.type == QUIT:
                 print(chars)
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
                 keys = event.key
+                underline.x += 16
+
                 if keys == pygame.K_a:
                     cur_key = "a"
                 if keys == pygame.K_b:
@@ -164,11 +174,14 @@ def main_game(need_sen, keys_pressed, keys_right):
                 typed_chars.append(cur_key)
                 if typed_chars[keys_pressed] == chars[keys_pressed]:
                     keys_right += 1
+
                 keys_pressed += 1
             if len(chars) == keys_pressed:
                 keys_pressed = 0
                 print(round((keys_right / len(chars)) * 100))
                 keys_right = 0
+        print(underline.x)
+        pygame.display.update()
 
 
 # Next steps, find time and make user know when they get smth right, then set up hte turn based stuff
@@ -187,7 +200,7 @@ def main_menu():
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.isOver(pos):
-                    main_game(need_sen, keys_pressed, keys_right)
+                    main_game(need_sen, keys_pressed, keys_right, x)
                 if end_button.isOver(pos):
                     pygame.quit()
 
