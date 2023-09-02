@@ -11,6 +11,7 @@ height = 600
 screen = pygame.display.set_mode((width, height))
 
 introScreen = True
+
 def main_menu():
     while True:
         pygame.display.update()
