@@ -8,13 +8,15 @@ pygame.init()
 clock = pygame.time.Clock()
 width = 1000
 height = 600
-done = True
 screen = pygame.display.set_mode((width, height))
 
-while done:
-    pygame.display.update()
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
+introScreen = True
+
+def main_menu():
+    while True:
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q: 
                     print("The Q button was pressed")
                 elif event.key == pygame.K_w:
@@ -67,5 +69,15 @@ while done:
                     print("The N button was pressed")
                 elif event.key == pygame.K_m:
                     print("The M button was pressed")
-        if event.type == QUIT:
-            pygame.quit()
+            if event.type == QUIT:
+                pygame.quit()
+def game_play():
+    pass
+
+while True:
+    if introScreen == True:
+        main_menu()
+
+    elif introScreen == False:
+        game_play()
+
