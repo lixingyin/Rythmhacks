@@ -7,24 +7,24 @@ from wonderwords import RandomSentence
 import time
 import os
 
-
-
-
 pygame.init()
 clock = pygame.time.Clock()
 width = 1000
 height = 750
-screen = pygame.display.set_mode((width, height))
+screen = pygame.display.set_mode((width, height), pygame.SRCALPHA)
+
+# screen.set_colorkey((0, 0, 0))
+
 black = (0, 0, 0)
 green = (0, 255, 0)
 blue = (0, 0, 255)
 s = RandomSentence()
 
-punchGuyStanding = pygame.image.load("https://ibb.co/GkQ6T23")
-punchGuyRight = pygame.image.load("https://ibb.co/QKDwk1b")
-punchGuyLeft = pygame.image.load("https://ibb.co/fvPd4M4")
-
-bg = pygame.image.load("./image/background.png").convert()
+bg = pygame.image.load("./image/background.png").convert_alpha()
+punchGuyStanding = pygame.image.load("./image/punchguy_right.png").convert_alpha()
+punchGuyPunchLeft = pygame.image.load("./image/punch guy punching with left punch hand.png").convert_alpha()
+punchGuyPunchRight = pygame.image.load("./image/punch guy punching with right punch hand.png").convert_alpha()
+wizardLeft = pygame.image.load("./image/wizard_left.png").convert_alpha()
 
 need_sen = True
 chars = []
@@ -34,6 +34,8 @@ keys_right = 0
 keys_wrong = 0
 cur_key = ""
 done = True
+player = 1
+
 
 gameClock = 0
 elapsedTime = 0
@@ -98,9 +100,14 @@ start_button = button((150, 43, 56), (width / 2) - 175, 450, 350, 100, "Start Ga
 end_button = button((150, 43, 56), (width / 2) - 175, 600, 350, 100, "Quit")
 
 font = pygame.font.Font("freesansbold.ttf", 30)
+monofont = pygame.font.SysFont("Courier New.ttf", 32)
+font2 = pygame.font.Font("freesansbold.ttf", 50)
 x = 150
 y = 641
 
+text = monofont.render("courier font guy",True, black,(255,255,255))
+textrectangle = text.get_rect()
+tex
 
 def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTime):
     screen.fill((0, 0, 0))
@@ -120,11 +127,14 @@ def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTi
         text0 = font.render(sentence, True, black, (132, 206, 235))
         textRect0 = text0.get_rect()
         textRect0.center = (width // 2, height - 125)
-        screen.fill((135, 206, 235)) #load backgrund colour
+        screen.fill((135, 206, 235)) #load background colour
         screen.blit(text0, textRect0)
         screen.blit(bg, (0, 0)) #load background image
-        timetext = font.render(str(gameClock), True, black, (132,206, 235))
+        screen.blit(punchGuyStanding, (100, 160))
+        screen.blit(wizardLeft, (650, 150))
+        timetext = font2.render(str(gameClock), True, black, ( 34, 126, 145))
         timetextrect = timetext.get_rect()
+        timetextrect.center = (width //2, 50 )
         screen.blit(timetext, timetextrect)
         if done:
             underline = pygame.Rect(
@@ -143,6 +153,8 @@ def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTi
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
                 keys = event.key
+
+                screen.blit(punchGuyPunchLeft, (100, 160))
 
                 if keys == pygame.K_a:
                     cur_key = "a"
@@ -206,15 +218,29 @@ def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTi
                     done = True
 
                 elif cur_key == chars[keys_right] and keys_right != len(chars)-1:
-                    if chars[keys_right + 1] == 'l' or chars[keys_right + 1] == "t" or chars[keys_right + 1] == "i" or chars[keys_right + 1] == "o" or chars[keys_right + 1] == " ":
-                        underline.x += 12
-                        keys_right += 1
-                    elif chars[keys_right + 1] == "c" or chars[keys_right + 1] == "d" or chars[keys_right + 1] == "j" or chars[keys_right + 1] == "q":
-                        underline.x += 15
-                        keys_right += 1
-                    else:
-                        keys_right += 1
-                        underline.x += 16
+                    # if chars[keys_right + 1] == 'l' or chars[keys_right + 1] == "t" or chars[keys_right + 1] == "i":
+                    #     underline.x += 8
+                    #     keys_right += 1
+                    # elif chars[keys_right + 1] == "c" or chars[keys_right + 1] == "d" or chars[keys_right + 1] == "j" or chars[keys_right + 1] == "q":
+                    #     underline.x += 15
+                    #     keys_right += 1
+                    # elif chars[keys_right + 1] == "a":
+                    #     underline.x += 18
+                    #     keys_right += 1
+                    # elif chars[keys_right + 1] == "e":
+                    #     underline.x += 20
+                    #     keys_right += 1
+                    # elif chars[keys_right + 1] == "m":
+                    #     underline.x += 30
+                    #     keys_right += 1
+                    # elif chars[keys_right + 1] == "j":
+                    #     underline.x += 8
+                    #     keys_right += 1
+                    # else:
+                    #     keys_right += 1
+                    #     underline.x += 16
+                    underline.x += 16
+                    keys_right += 1
                     typed_chars.append(cur_key)
 
                 else:
