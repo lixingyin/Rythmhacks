@@ -40,6 +40,7 @@ player = 1
 gameClock = 0
 elapsedTime = 0
 startTime = 0
+attack = False
 
 sentences = ['subscribe to yogogiddap', 'matthew yu can bench three fifteen', 'lalalalalalala', 'li xing yin is a guy. tha', "asejfeihfghksdfhjgestrytysdfggsdf", "I don\’t respect anybody who can\’t tell the difference between Pepsi and Coke."]
 
@@ -107,9 +108,10 @@ y = 641
 
 text = monofont.render("courier font guy",True, black,(255,255,255))
 textrectangle = text.get_rect()
-tex
+textrectangle.center = (500,200)
+screen.blit(text,textrectangle)
 
-def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTime):
+def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTime, attack, player):
     screen.fill((0, 0, 0))
     pygame.display.flip()
     gameClock = 0
@@ -130,7 +132,11 @@ def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTi
         screen.fill((135, 206, 235)) #load background colour
         screen.blit(text0, textRect0)
         screen.blit(bg, (0, 0)) #load background image
-        screen.blit(punchGuyStanding, (100, 160))
+        if attack != True:
+            screen.blit(punchGuyStanding, (100, 160))
+        elif attack == True:
+            screen.blit(punchGuyPunchRight, (100, 160))
+            time.sleep(3)
         screen.blit(wizardLeft, (650, 150))
         timetext = font2.render(str(gameClock), True, black, ( 34, 126, 145))
         timetextrect = timetext.get_rect()
@@ -261,6 +267,11 @@ def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTi
                 keys_wrong = 0
                 need_sen = True
                 gameClock = 0
+                attack = True
+                if player == 1:
+                    player = 2
+                elif player == 2:
+                    player = 1
         pygame.display.update()
 
 
@@ -282,7 +293,7 @@ def main_menu():
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 startTime = time.time()
-                main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTime)
+                main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTime, attack, player)
                 if end_button.isOver(pos):
                     pygame.quit()
 
