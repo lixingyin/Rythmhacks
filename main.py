@@ -8,11 +8,15 @@ pygame.init()
 clock = pygame.time.Clock()
 width = 1000
 height = 600
-done = True
 screen = pygame.display.set_mode((width, height))
 
-while done:
-    pygame.display.update()
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
+
+def main_menu():
+    while True:
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+
+
+main_menu()
