@@ -13,13 +13,15 @@ screen = pygame.display.set_mode((width, height))
 introScreen = True
 
 def main_menu():
+    color = (255, 255, 255)
     while True:
-        pygame.draw.rect(screen, (255, 255, 255), (40, 40, 60, 60))
+        pygame.draw.rect(screen, color, (40, 40, 60, 60))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q: 
                     print("The Q button was pressed")
+                    color = (255, 0, 0)
                 elif event.key == pygame.K_w:
                     print("The W button was pressed")
                 elif event.key == pygame.K_e:
