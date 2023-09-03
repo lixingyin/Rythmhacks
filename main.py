@@ -51,7 +51,7 @@ startTime = 0
 attack = False
 
 
-sentences = ['do not subscribe to yogogiddap', 'matthew yu can bench three fifteen', 'lalalalalalala', 'lixing yin does not need his phone', "asejfeihfghksdfhjgestrytysdfggsdf", "jasmine xu", "when is the next hackathon", "alicehacks sucks", "gary is the most best xvi year old"]
+sentences = ['i am 1', 'test test test test', 'this is a real sentence that exists']
 
 def calculateDamage(speed, accuracy):
     damage = (200/speed**2)*(accuracy)
@@ -224,6 +224,26 @@ def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTi
                     cur_key = "y"
                 if keys == pygame.K_z:
                     cur_key = "z"
+                if keys == pygame.K_1:
+                    cur_key = "1"
+                if keys == pygame.K_2:
+                    cur_key = "2"
+                if keys == pygame.K_3:
+                    cur_key = "3"
+                if keys == pygame.K_4:
+                    cur_key = "4"
+                if keys == pygame.K_5:
+                    cur_key = "5"
+                if keys == pygame.K_6:
+                    cur_key = "6"
+                if keys == pygame.K_7:
+                    cur_key = "7"
+                if keys == pygame.K_8:
+                    cur_key = "8" 
+                if keys == pygame.K_9:
+                    cur_key = "9"
+                if keys == pygame.K_0:
+                    cur_key = "0" 
                 if keys == pygame.K_PERIOD:
                     cur_key = "."
                 if keys == pygame.K_MINUS:
