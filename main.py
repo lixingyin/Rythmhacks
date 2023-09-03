@@ -11,7 +11,7 @@ from pygame import mixer
 # music
 mixer.init()
 mixer.music.load("xiexie.mp3")
-mixer.music.set_volume(0)
+mixer.music.set_volume(0.5)
 mixer.music.play()
 
 pygame.init()
