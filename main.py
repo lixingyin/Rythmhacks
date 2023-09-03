@@ -11,7 +11,7 @@ from pygame import mixer
 # music
 mixer.init()
 mixer.music.load("xiexie.mp3")
-mixer.music.set_volume(0)
+mixer.music.set_volume(0.5)
 mixer.music.play()
 
 pygame.init()
@@ -58,43 +58,43 @@ dmg_display = False
 
 
 sentences = [
-    "the cat sleeps on the warm, sunny windowsill.",
-    "reading a book by candlelight is quite calming.",
-    "rainy days bring a sense of peace and coziness.",
-    "the forest hides secrets waiting to be discovered.",
-    "cooking together creates cherished family memories.",
-    "music lifts our spirits and soothes our hearts.",
-    "morning walks refresh the mind and body.",
-    "stars twinkle like diamonds in the night sky.",
-    "a cup of tea warms the coldest of evenings.",
-    "small acts of kindness can change the world.",
-    "the river flows gently, whispering ancient stories.",
-    "a smile can brighten even the darkest days.",
-    "finding joy in simple things is true happiness.",
-    "painting allows emotions to flow freely on canvas.",
-    "birdsong heralds the arrival of a new day.",
-    "a handwritten letter holds sentimental treasures.",
-    "sunsets paint the sky with hues of gold.",
-    "clouds dance lazily in the vast blue canvas.",
-    "childhood memories are a treasure chest of happiness.",
-    "curiosity leads to discoveries beyond imagination.",
-    "gardens bloom with colors, a living masterpiece.",
-    "trees sway in the gentle breeze, a tranquil sight.",
-    "a cozy blanket and book invite peaceful moments.",
-    "morning dew glistens like a thousand tiny diamonds.",
-    "a quiet forest walk soothes the weary soul.",
-    "kindness ripples outward, changing lives forever.",
-    "family gatherings create bonds that never break.",
-    "a hearty meal warms both body and spirit.",
-    "autumn leaves whisper secrets in the wind.",
-    "starry nights hold the promise of dreams fulfilled.",
-    "the smell of fresh-baked bread is pure comfort.",
-    "childhood laughter echoes in the heart forever.",
-    "a clear sky reveals a universe of wonders.",
-    "a good book can transport you to new worlds.",
-    "every sunset paints a unique masterpiece.",
-    "morning birdsong greets the day with joy.",
-    "the simple life often holds the greatest riches.",
+    "the cat sleeps on the warm, sunny windowsill",
+    "reading a book by candlelight is quite calming",
+    "rainy days bring a sense of peace and coziness",
+    "the forest hides secrets waiting to be discovered",
+    "cooking together creates cherished family memories",
+    "music lifts our spirits and soothes our hearts",
+    "morning walks refresh the mind and body",
+    "stars twinkle like diamonds in the night sky",
+    "a cup of tea warms the coldest of evenings",
+    "small acts of kindness can change the world",
+    "the river flows gently, whispering ancient stories",
+    "a smile can brighten even the darkest days",
+    "finding joy in simple things is true happiness",
+    "painting allows emotions to flow freely on canvas",
+    "birdsong heralds the arrival of a new day",
+    "a handwritten letter holds sentimental treasures",
+    "sunsets paint the sky with hues of gold",
+    "clouds dance lazily in the vast blue canvas",
+    "childhood memories are a treasure chest of happiness",
+    "curiosity leads to discoveries beyond imagination",
+    "gardens bloom with colors, a living masterpiece",
+    "trees sway in the gentle breeze, a tranquil sight",
+    "a cozy blanket and book invite peaceful moments",
+    "morning dew glistens like a thousand tiny diamonds",
+    "a quiet forest walk soothes the weary soul",
+    "kindness ripples outward, changing lives forever",
+    "family gatherings create bonds that never break",
+    "a hearty meal warms both body and spirit",
+    "autumn leaves whisper secrets in the wind",
+    "starry nights hold the promise of dreams fulfilled",
+    "the smell of fresh-baked bread is pure comfort",
+    "childhood laughter echoes in the heart forever",
+    "a clear sky reveals a universe of wonders",
+    "a good book can transport you to new worlds",
+    "every sunset paints a unique masterpiece",
+    "morning birdsong greets the day with joy",
+    "the simple life often holds the greatest riches",
 ]
 
 
@@ -169,27 +169,19 @@ player1_health = 300
 player1_hel = pygame.Rect(50, 30, 40, 40)
 player1_bar = pygame.Rect((player1_hel.x), 90, player1_health, 30)
 player1_max_bar = pygame.Rect((player1_hel.x), 90, 300, 30)
-player2_health = 100
+player2_health = 300
 player2_hel = pygame.Rect(650, 30, 40, 40)
 player2_bar = pygame.Rect((player2_hel.x), 90, player2_health, 30)
 player2_max_bar = pygame.Rect((player2_hel.x), 90, 300, 30)
 enter = pygame.image.load("enter.png")
 
 
-def end(player1, player2):
-    if player1 > player2:
-        winner = "Player 1!"
-    elif player2 > player1:
-        winner = "Player 2!"
-
+def end():
     while True:
         pygame.display.update()
         screen.fill((0, 0, 0))
         quit_button.draw(screen, (0, 0, 0))
         restart_button.draw(screen, (0, 0, 0))
-        winner_text = monofont.render(winner, True, black, (132, 206, 235))
-        winner_textRect0 = winner_text.get_rect()
-        winner_textRect0.center = (width // 2, 600)
         screen.blit(gameover, (100, 50))
 
         for event in pygame.event.get():
@@ -199,7 +191,8 @@ def end(player1, player2):
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if restart_button.isOver(pos):
-                    pygame.time.delay(3000)
+                    player1_bar.width = 300
+                    player2_bar.width = 300
                     main_game(
                         need_sen,
                         done,
@@ -212,6 +205,7 @@ def end(player1, player2):
                         player,
                         cur_key,
                     )
+
                 if quit_button.isOver(pos):
                     pygame.quit()
 
@@ -241,13 +235,17 @@ def main_game(
             for char in sentence:
                 chars.append(char)
             need_sen = False
-
+        print(player1_bar.width)
+        print(player2_bar.width)
         text0 = monofont.render(sentence, True, black, (132, 206, 235))
         textRect0 = text0.get_rect()
         textRect0.center = (width // 2, height - 125)
+
         screen.fill((135, 206, 235))  # load background colour
-        screen.blit(text0, textRect0)
+
         screen.blit(bg, (0, 0))  # load background image
+        screen.blit(text0, textRect0)
+
         screen.blit(enter, ((200), height - 105))
         pygame.draw.rect(screen, (220, 20, 60), player1_bar)
         pygame.draw.rect(screen, (225, 225, 225), player1_max_bar, 2)
@@ -265,7 +263,9 @@ def main_game(
         # time.sleep(3)
 
         screen.blit(wizardLeft, (550, 125))
-        timetext = font2.render(str(gameClock), True, black, (34, 126, 145))
+        timetext = font2.render(
+            "Player " + str(player) + "s" + " turn", True, black, (34, 126, 145)
+        )
         timetextrect = timetext.get_rect()
         timetextrect.center = (width // 2, 50)
         screen.blit(timetext, timetextrect)
@@ -279,7 +279,8 @@ def main_game(
 
         pygame.draw.line(screen, black, (0, 562.5), (1000, 562.5), 3)
         pygame.draw.rect(screen, (128, 128, 128), underline)
-
+        if player1_bar.width <= 0 or player2_bar.width <= 0:
+            done = True
         for event in pygame.event.get():
             if event.type == QUIT:
                 print(chars)
@@ -420,15 +421,14 @@ def main_game(
                     need_sen = True
                     gameClock = 0
                     attack = True
-                    end(player1_health, player2_health)
+                    player1_health = 300
+                    player2_health = 300
+                    end()
 
                 else:
                     pygame.mixer.Channel(1).play(pygame.mixer.Sound("HIYAH.mp3"))
                     accuracy = round((keys_right / (keys_right + keys_wrong)) * 100)
-                    print("accuracy", accuracy)
-                    print("Speed =", len(chars), "/", gameClock)
                     damage = calculateDamage(gameClock, accuracy)
-                    print("Damage", damage)
                     if player == 1:
                         player2_bar.width -= damage / 2
                     elif player == 2:
@@ -488,41 +488,3 @@ def main_menu():
 
 
 main_menu()
-
-# # importing required library
-# import pygame
-
-# # activate the pygame library .
-# pygame.init()
-# X = 600
-# Y = 600
-
-# # create the display surface object
-# # of specific dimension..e(X, Y).
-# scrn = pygame.display.set_mode((X, Y))
-
-# # set the pygame window name
-# pygame.display.set_caption('image')
-
-# # create a surface object, image is drawn on it.
-
-# # Using blit to copy content from one surface to other
-# scrn.blit(imp, (0, 0))
-
-# # paint screen one time
-# pygame.display.flip()
-# status = True
-# while (status):
-
-# # iterate over the list of Event objects
-# # that was returned by pygame.event.get() method.
-# 	for i in pygame.event.get():
-
-# 		# if event object type is QUIT
-# 		# then quitting the pygame
-# 		# and program both.
-# 		if i.type == pygame.QUIT:
-# 			status = False
-
-# # deactivates the pygame library
-# pygame.quit()
