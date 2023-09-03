@@ -19,6 +19,8 @@ clock = pygame.time.Clock()
 width = 1000
 height = 750
 screen = pygame.display.set_mode((width, height), pygame.SRCALPHA)
+player1_health = 500
+player2_health = 500
 
 # screen.set_colorkey((0, 0, 0))
 
@@ -275,6 +277,7 @@ def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTi
                     damageText2 = font2.render(str(damage),True,black,(255,255,255))
                     damageTextRect2 = damageText2.get_rect()
                     damageTextRect2.center = (550,150)
+                    player2_health += damage * (-1)
                     player = 2
                 elif player == 2:
                     print("current player",player)
