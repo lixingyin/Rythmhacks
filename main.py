@@ -53,7 +53,7 @@ startTime = 0
 attack = False
 
 
-sentences = ['i am 1', 'test test test test', 'this is a real sentence that exists']
+sentences = ['do not subscribe to yogogiddap', 'matthew yu can bench three fifteen', 'lalalalalalala', 'lixing yin does not need his phone', "asejfeihfghksdfhjgestrytysdfggsdf", "jasmine xu", "when is the next hackathon", "alicehacks sucks", "gary is the most best xvi year old"]
 
 def calculateDamage(speed, accuracy):
     damage = (200/speed**2)*(accuracy)
@@ -304,6 +304,7 @@ def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTi
                     damageText = font2.render(str(damage),True,black,(255,255,255))
                     damageTextRect = damageText.get_rect()
                     damageTextRect.center = (170,150)
+                    player1_health += damage * (-1)
                     player = 1
 
         pygame.display.update()
