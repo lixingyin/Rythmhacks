@@ -6,6 +6,13 @@ from pygame import mixer
 from wonderwords import RandomSentence
 import time
 import os
+from pygame import mixer
+
+# music
+mixer.init()
+mixer.music.load('xiexie.mp3')
+mixer.music.set_volume(0.5)
+mixer.music.play()
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -35,17 +42,19 @@ keys_wrong = 0
 cur_key = ""
 done = True
 player = 1
-
+guyX = 170
+guyY = 130
 
 gameClock = 0
 elapsedTime = 0
 startTime = 0
 attack = False
 
-sentences = ['subscribe to yogogiddap', 'matthew yu can bench three fifteen', 'lalalalalalala', 'li xing yin is a guy. tha', "asejfeihfghksdfhjgestrytysdfggsdf", "I don\’t respect anybody who can\’t tell the difference between Pepsi and Coke."]
+
+sentences = ['do not subscribe to yogogiddap', 'matthew yu can bench three fifteen', 'lalalalalalala', 'lixing yin does not need his phone', "asejfeihfghksdfhjgestrytysdfggsdf", "jasmine xu", "when is the next hackathon", "alicehacks sucks", "gary is the most best xvi year old"]
 
 def calculateDamage(speed, accuracy):
-    damage = (200/speed**2)*(accuracy/10)
+    damage = (200/speed**2)*(accuracy)
     return damage
 
 def create_sentence():
@@ -101,17 +110,12 @@ start_button = button((150, 43, 56), (width / 2) - 175, 450, 350, 100, "Start Ga
 end_button = button((150, 43, 56), (width / 2) - 175, 600, 350, 100, "Quit")
 
 font = pygame.font.Font("freesansbold.ttf", 30)
-monofont = pygame.font.SysFont("Courier New.ttf", 32)
+monofont = pygame.font.SysFont("lucidasans.ttf", 45)
 font2 = pygame.font.Font("freesansbold.ttf", 50)
 x = 150
 y = 641
 
-text = monofont.render("courier font guy",True, black,(255,255,255))
-textrectangle = text.get_rect()
-textrectangle.center = (500,200)
-screen.blit(text,textrectangle)
-
-def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTime, attack, player):
+def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTime, attack, player, cur_key=''):
     screen.fill((0, 0, 0))
     pygame.display.flip()
     gameClock = 0
@@ -126,18 +130,25 @@ def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTi
                 chars.append(char)
             need_sen = False
 
-        text0 = font.render(sentence, True, black, (132, 206, 235))
+        text0 = monofont.render(sentence, True, black, (132, 206, 235))
         textRect0 = text0.get_rect()
         textRect0.center = (width // 2, height - 125)
         screen.fill((135, 206, 235)) #load background colour
         screen.blit(text0, textRect0)
         screen.blit(bg, (0, 0)) #load background image
-        if attack != True:
-            screen.blit(punchGuyStanding, (100, 160))
+        if attack == False:
+            guy = screen.blit(punchGuyStanding, (guyX, guyY))
+            pygame.mixer.Channel(1).play(pygame.mixer.Sound('HIYAH.mp3'))
+
         elif attack == True:
-            screen.blit(punchGuyPunchRight, (100, 160))
-            time.sleep(3)
-        screen.blit(wizardLeft, (650, 150))
+            # guy.kill()
+            # guy.set_alpha(0)
+            pygame.mixer.Channel(1).play(pygame.mixer.Sound('HIYAH.mp3'))
+            punchGuy = screen.blit(punchGuyPunchRight, (guyX, guyY))
+        # time.sleep(3)
+
+            
+        screen.blit(wizardLeft, (550, 125))
         timetext = font2.render(str(gameClock), True, black, ( 34, 126, 145))
         timetextrect = timetext.get_rect()
         timetextrect.center = (width //2, 50 )
@@ -159,8 +170,7 @@ def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTi
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
                 keys = event.key
-
-                screen.blit(punchGuyPunchLeft, (100, 160))
+                screen.blit(punchGuyPunchLeft, (170, 130))
 
                 if keys == pygame.K_a:
                     cur_key = "a"
@@ -221,32 +231,23 @@ def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTi
                 if keys == pygame.K_SPACE:
                     cur_key = " "
                 if (keys == pygame.K_RETURN) and (keys_right+1 == len(chars)):
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound('HIYAH.mp3'))
+                    
                     done = True
 
-                elif cur_key == chars[keys_right] and keys_right != len(chars)-1:
-                    # if chars[keys_right + 1] == 'l' or chars[keys_right + 1] == "t" or chars[keys_right + 1] == "i":
-                    #     underline.x += 8
-                    #     keys_right += 1
-                    # elif chars[keys_right + 1] == "c" or chars[keys_right + 1] == "d" or chars[keys_right + 1] == "j" or chars[keys_right + 1] == "q":
-                    #     underline.x += 15
-                    #     keys_right += 1
-                    # elif chars[keys_right + 1] == "a":
-                    #     underline.x += 18
-                    #     keys_right += 1
-                    # elif chars[keys_right + 1] == "e":
-                    #     underline.x += 20
-                    #     keys_right += 1
-                    # elif chars[keys_right + 1] == "m":
-                    #     underline.x += 30
-                    #     keys_right += 1
-                    # elif chars[keys_right + 1] == "j":
-                    #     underline.x += 8
-                    #     keys_right += 1
-                    # else:
-                    #     keys_right += 1
-                    #     underline.x += 16
-                    underline.x += 16
-                    keys_right += 1
+                if cur_key == chars[keys_right] and keys_right != len(chars)-1:
+                    print("current key",cur_key)
+                    if cur_key == "i" or cur_key == "l" or cur_key == "j" or cur_key == "t":
+                        underline.x += 10
+                        print("small jump")
+                        keys_right += 1
+                    elif cur_key == "w" or cur_key == "m":
+                        print("big jump")
+                        underline.x += 18
+                        keys_right += 1
+                    else:
+                        underline.x += 14.5
+                        keys_right += 1
                     typed_chars.append(cur_key)
 
                 else:
@@ -256,6 +257,7 @@ def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTi
 
 
             if done:
+                pygame.mixer.Channel(1).play(pygame.mixer.Sound('HIYAH.mp3'))
                 accuracy = (round((keys_right/(keys_right + keys_wrong) ) * 100))
                 print("accuracy",accuracy)
                 print("Speed =",len(chars),"/",gameClock)
@@ -269,9 +271,18 @@ def main_game(need_sen, done, keys_right, keys_wrong, typed_chars, chars,startTi
                 gameClock = 0
                 attack = True
                 if player == 1:
+                    print("current player",player)
+                    damageText2 = font2.render(str(damage),True,black,(255,255,255))
+                    damageTextRect2 = damageText2.get_rect()
+                    damageTextRect2.center = (550,150)
                     player = 2
                 elif player == 2:
+                    print("current player",player)
+                    damageText = font2.render(str(damage),True,black,(255,255,255))
+                    damageTextRect = damageText.get_rect()
+                    damageTextRect.center = (170,150)
                     player = 1
+
         pygame.display.update()
 
 
