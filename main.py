@@ -6,30 +6,21 @@ from pygame import mixer
 from pygame.sprite import Group
 from wonderwords import RandomSentence
 import time
-<<<<<<< Updated upstream
-=======
 import os
->>>>>>> Stashed changes
 
 pygame.init()
 clock = pygame.time.Clock()
 width = 1000
 height = 750
-<<<<<<< Updated upstream
-screen = pygame.display.set_mode((width, height))
-=======
 screen = pygame.display.set_mode((width, height), pygame.SRCALPHA)
 
 # screen.set_colorkey((0, 0, 0))
 
->>>>>>> Stashed changes
 black = (0, 0, 0)
 green = (0, 255, 0)
 blue = (0, 0, 255)
 s = RandomSentence()
 
-<<<<<<< Updated upstream
-=======
 bg = pygame.image.load("./image/background.png").convert_alpha()
 punchGuyStanding = pygame.image.load("./image/punchguy_right.png").convert_alpha()
 punchGuyPunchLeft = pygame.image.load(
@@ -41,15 +32,11 @@ punchGuyPunchRight = pygame.image.load(
 wizardLeft = pygame.image.load("./image/wizard_left.png").convert_alpha()
 heart = pygame.image.load("./image/heart.png").convert_alpha()
 
->>>>>>> Stashed changes
 need_sen = True
 chars = []
 typed_chars = []
 keys_pressed = 0
 keys_right = 0
-<<<<<<< Updated upstream
-cur_key = ""
-=======
 keys_wrong = 0
 cur_key = ""
 done = True
@@ -72,9 +59,9 @@ sentences = [
 
 
 def calculateDamage(speed, accuracy):
+    if speed == 0: speed = 1
     damage = (200 / speed**2) * (accuracy / 10)
     return damage
->>>>>>> Stashed changes
 
 
 def create_sentence():
@@ -123,10 +110,6 @@ class button:
         if pos[0] > self.x and pos[0] < self.x + self.width:
             if pos[1] > self.y and pos[1] < self.y + self.height:
                 return True
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
         return False
 
 
@@ -134,18 +117,6 @@ start_button = button((150, 43, 56), (width / 2) - 175, 450, 350, 100, "Start Ga
 end_button = button((150, 43, 56), (width / 2) - 175, 600, 350, 100, "Quit")
 
 font = pygame.font.Font("freesansbold.ttf", 30)
-<<<<<<< Updated upstream
-x = 150
-y = 641
-
-health = 300
-hel = pygame.Rect(50, 30, 40, 40)
-bar = pygame.Rect((hel.x), 50, health, 30)
-max_bar = pygame.Rect((hel.x), 50, 300, 30)
-
-
-def main_game(need_sen, keys_pressed, keys_right, x):
-=======
 monofont = pygame.font.SysFont("Courier New.ttf", 32)
 font2 = pygame.font.Font("freesansbold.ttf", 50)
 x = 150
@@ -173,17 +144,13 @@ def main_game(
     startTime,
     attack,
     player,
+    gameClock
 ):
->>>>>>> Stashed changes
     screen.fill((0, 0, 0))
 
     while True:
         if need_sen == True:
-<<<<<<< Updated upstream
-            sentence = create_sentence()
-=======
             sentence = random.choice(sentences)
->>>>>>> Stashed changes
             for char in sentence:
                 chars.append(char)
             need_sen = False
@@ -191,11 +158,6 @@ def main_game(
         text0 = font.render(sentence, True, black, (132, 206, 235))
         textRect0 = text0.get_rect()
         textRect0.center = (width // 2, height - 125)
-<<<<<<< Updated upstream
-        screen.fill((135, 206, 235))
-        screen.blit(text0, textRect0)
-        if keys_pressed == 0:
-=======
         screen.fill((135, 206, 235))  # load background colour
         screen.blit(text0, textRect0)
         screen.blit(bg, (0, 0))  # load background image
@@ -211,7 +173,6 @@ def main_game(
         timetextrect.center = (width // 2, 50)
         screen.blit(timetext, timetextrect)
         if done:
->>>>>>> Stashed changes
             underline = pygame.Rect(
                 textRect0.bottomleft[0], textRect0.bottomleft[1] - 2, 10, 5
             )
@@ -220,26 +181,15 @@ def main_game(
 
         pygame.draw.line(screen, black, (0, 562.5), (1000, 562.5), 3)
         pygame.draw.rect(screen, (128, 128, 128), underline)
-<<<<<<< Updated upstream
-        pygame.draw.rect(screen, (220, 20, 60), bar)
-        pygame.draw.rect(screen, (225, 225, 225), max_bar, 2)
-=======
-
->>>>>>> Stashed changes
         for event in pygame.event.get():
             if event.type == QUIT:
                 print(chars)
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
                 keys = event.key
-<<<<<<< Updated upstream
-                underline.x += 16
-
-=======
 
                 screen.blit(punchGuyPunchLeft, (100, 160))
 
->>>>>>> Stashed changes
                 if keys == pygame.K_a:
                     cur_key = "a"
                 if keys == pygame.K_b:
@@ -296,24 +246,11 @@ def main_game(
                     cur_key = "."
                 if keys == pygame.K_MINUS:
                     cur_key = "-"
-<<<<<<< Updated upstream
-
-                typed_chars.append(cur_key)
-                if typed_chars[keys_pressed] == chars[keys_pressed]:
-                    keys_right += 1
-
-                keys_pressed += 1
-            if len(chars) == keys_pressed:
-                keys_pressed = 0
-                print(round((keys_right / len(chars)) * 100))
-                keys_right = 0
-        print(underline.x)
-=======
                 if keys == pygame.K_SPACE:
                     cur_key = " "
                 if (keys == pygame.K_RETURN) and (keys_right + 1 == len(chars)):
                     done = True
-
+                
                 elif cur_key == chars[keys_right] and keys_right != len(chars) - 1:
                     if (
                         chars[keys_right + 1] == "l"
@@ -352,7 +289,10 @@ def main_game(
                     keys_wrong += 1
 
             if done:
-                accuracy = round((keys_right / (keys_right + keys_wrong)) * 100)
+                if keys_right + keys_wrong == 0:
+                    accuracy = 100
+                else:
+                    accuracy = round((keys_right / (keys_right + keys_wrong)) * 100)
                 print("accuracy", accuracy)
                 print("Speed =", len(chars), "/", gameClock)
                 damage = calculateDamage(gameClock, accuracy)
@@ -368,7 +308,6 @@ def main_game(
                     player = 2
                 elif player == 2:
                     player = 1
->>>>>>> Stashed changes
         pygame.display.update()
 
 
@@ -387,10 +326,6 @@ def main_menu():
             if event.type == QUIT:
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-<<<<<<< Updated upstream
-                if start_button.isOver(pos):
-                    main_game(need_sen, keys_pressed, keys_right, x)
-=======
                 startTime = time.time()
                 if start_button.isOver(pos):
                     main_game(
@@ -403,15 +338,13 @@ def main_menu():
                         startTime,
                         attack,
                         player,
+                        gameClock
                     )
->>>>>>> Stashed changes
                 if end_button.isOver(pos):
                     pygame.quit()
 
 
 main_menu()
-<<<<<<< Updated upstream
-=======
 
 # # importing required library
 # import pygame
@@ -450,4 +383,3 @@ main_menu()
 
 # # deactivates the pygame library
 # pygame.quit()
->>>>>>> Stashed changes
