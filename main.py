@@ -427,6 +427,7 @@ def main_game(
 
                 else:
                     pygame.mixer.Channel(1).play(pygame.mixer.Sound("HIYAH.mp3"))
+
                     accuracy = round((keys_right / (keys_right + keys_wrong)) * 100)
                     damage = calculateDamage(gameClock, accuracy)
                     if player == 1:
